@@ -1,7 +1,7 @@
 package moduleB
 
 import (
-	"github.com/mccurdyc/cue-notes/moduleA"
+	"github.com/fastly/cue-notes/moduleA"
 )
 
 otherValue: moduleA.myValue

@@ -32,6 +32,27 @@
     cue fmt ./...
     ```
 
+- Render YAML
+
+```
+package main
+
+import (
+	"encoding/yaml"
+	"tool/cli"
+)
+
+command: dump: {
+	task: print: cli.Print & {
+		text: yaml.Marshal(_rendered)
+	}
+}
+```
+
+```
+cue cmd dump ./main/...
+```
+
 - YAML
 	- https://github.com/cue-lang/cue/blob/v0.7.0/doc/tutorial/kubernetes/README.md
 	- `cue import -f -R foo.yaml` 
@@ -41,6 +62,26 @@
 `yaml.Marshal` is EXTREMELY finicky. You will want to pull whatever out of
 `yaml.Marshal()` into a thing that you can run via `cue eval`. Look for places
 where you don't have concrete values. Those ALL need fixed. 
+
+### Pattern
+- We create a `debug/` directory at the same level as the package we are trying
+to debug or "simulate". Then, we symlink all `.cue` files that DON'T include `yaml.Marshal(..)`.
+
+```
+mkdir debug && cd debug
+ln -snf ../main/debug.cue .
+ln -snf ../main/modify.cue .
+```
+
+Then, we can debug Cue via the following
+```
+cue eval ./debug/... -e '_debug'
+```
+
+And, we can still render/test marshalling the same cue to yaml with 
+```
+cue cmd dump ./main/...
+```
 
 ## Getting Started
 
@@ -86,15 +127,45 @@ where you don't have concrete values. Those ALL need fixed.
 ### Understanding Fundamentals
 
 - https://cuelang.org/docs/concepts/logic/
+- https://alpha.cuelang.org/docs/howto/ 
+- https://cuetorials.com/overview/foundations/
 
 ### Patterns
 
-- https://alpha.cuelang.org/docs/howto/ 
-- BEST -> https://cuetorials.com/overview/foundations/
 - Pattern matching / avoiding switch - https://cuetorials.com/overview/types-and-values/#pattern-matching-constraints
+
 - Enums - https://cuelang.org/docs/tutorials/tour/types/disjunctions/
+
 - Defining "global" package variable for re-use in the package - https://alpha.cuelang.org/docs/howto/use-the-built-in-function-or/
+
 - Aliases - https://alpha.cuelang.org/docs/language-guide/templating/references/#aliases
+
 - List comprehension / for-each - https://alpha.cuelang.org/docs/language-guide/templating/comprehensions/
+
 - Applying constraint to many fields at once - https://alpha.cuelang.org/docs/language-guide/templating/constructing-maps/#pattern-constraints
-- [one of / either x OR y](https://cuetorials.com/patterns/fields/#oneof)
+
+- ["one of" / either x OR y](./oneOf)
+    - Reference - https://cuetorials.com/patterns/fields/#oneof
+    - Example - https://cuelang.org/play/?id=NIrmjj_gM4Z#cue@export@cue
+
+```bash
+cue eval ./oneOf/...
+```
+
+- [debug](./debug)
+
+```bash
+cue eval ./debug/... -e _debug
+```
+
+- ["if not set" or "bottom"](./bottom)
+
+    - Reference - https://cuelang.org/docs/tutorials/tour/types/bottom/
+
+```bash
+cue eval ./bottom/... -e output
+
+set:                  "a"
+notSet:               "im explicitly setting here"
+notSetButWithDefault: "default"
+```

@@ -2,6 +2,8 @@ package main
 
 import (
 	"strings"
+
+	"github.com/fastly/cue-notes/consume/nested:consume"
 )
 
 // input schema
@@ -29,3 +31,5 @@ import (
 	output: value:        _val
 	output: nested_value: _nested
 }
+
+_rendered: (#Transform & {input: consume.input}) // returns a concrete value

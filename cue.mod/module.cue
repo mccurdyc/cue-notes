@@ -1,1 +1,1 @@
-module: "github.com/mccurdyc/cue-notes"
+module: "github.com/fastly/cue-notes"
