@@ -169,3 +169,11 @@ set:                  "a"
 notSet:               "im explicitly setting here"
 notSetButWithDefault: "default"
 ```
+
+- [Read a raw file and write it somewhere](./read_file)
+
+    - Reference - https://pkg.go.dev/cuelang.org/go/pkg/tool/file
+
+```bash
+cue cmd "read_file" ./read_file
+```
