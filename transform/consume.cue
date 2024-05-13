@@ -1,9 +1,13 @@
 package transform
 
-top: {
+top1: {
+"top": {
 	some_list: "middle": {
 		foo: "override"
 	}
 }
+}
 
-output: (#Transform & {input: top}).output
+top2: some_list: (#Transform & {input: top1.some_list}).output]
+
+top3: (#Transform & {input: top2.some_list}).output]
