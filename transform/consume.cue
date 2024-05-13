@@ -1,12 +1,6 @@
 package transform
 
-top1: {
-	top_key: "top key"
-	"top": {
-		some_list: "middle": {
-			foo: "override"
-		}
-	}
-}
+in: top: {}
+in: top: "outer": some_list: "inner": {}
 
-out: (#Transform & {input: top1.some_list}).output
+output: (#Transform & {input: in}).output

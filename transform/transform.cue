@@ -5,10 +5,9 @@ package transform
 	output: #Output
 
 	output: [{
-		name:    "outputted_here"
-		top_key: input.top_key
-		some_list: [for k, v in input.top.some_list {v & {
-			added: "added_in_transform_function"
+		name: "outputted_here"
+		some_list: [for k, v in input.top for kk, vv in v.some_list {{vv} & {
+			added_in_transform_function: "added"
 		}}]
 	}]
 }
@@ -33,11 +32,10 @@ package transform
 	//#DB: "postgres" | "mysql" | =~"db$"
 
 	top: {
-		top_key: string
-		[Here=string]: {
-			name!: Here
-			some_list: [_=string]: {
-				foo: string
+		[Outer=string]: {
+			name: Outer
+			some_list: [Inner=string]: {
+				foo: Inner
 				... // to allow 'added_in_transform_function' to be added
 			}
 		}
@@ -45,8 +43,7 @@ package transform
 }
 
 #Output: [...{
-	name!:    string
-	top_key!: string
+	name!: string
 	some_list: [...{
 		foo: string
 		... // to allow 'added_in_transform_function' to be added
