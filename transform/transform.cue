@@ -5,7 +5,8 @@ package transform
 	output: #Output
 
 	output: [{
-		name: "outputted_here"
+		name:    "outputted_here"
+		top_key: input.top_key
 		some_list: [for k, v in input.top.some_list {v & {
 			added: "added_in_transform_function"
 		}}]
@@ -31,17 +32,21 @@ package transform
 	//job: [#DB]: replicas: >=3
 	//#DB: "postgres" | "mysql" | =~"db$"
 
-	top: [Here=_]: {
-		name!: Here
-		some_list: [_=string]: {
-			foo: string
-			... // to allow 'added_in_transform_function' to be added
+	top: {
+		top_key: string
+		[Here=string]: {
+			name!: Here
+			some_list: [_=string]: {
+				foo: string
+				... // to allow 'added_in_transform_function' to be added
+			}
 		}
 	}
 }
 
 #Output: [...{
-	name!: string
+	name!:    string
+	top_key!: string
 	some_list: [...{
 		foo: string
 		... // to allow 'added_in_transform_function' to be added
