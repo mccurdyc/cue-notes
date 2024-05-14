@@ -4,27 +4,26 @@ package transform
 	input:  #Input
 	output: #Output
 
-	output: {
-		if input.value != _|_ {
-			value: input.value
-		}
+	if input.value != _|_ {
+		output: value: input.value
+	}
 
-		if input.null_check == null {
-			value: "YIKES!! null check helped"
-		}
+	if input.null_check == null {
+  output: null_check: "YIKES!! null check helped"
+	}
 
-		if input.value == _|_ {
-			value: "YIKES! what you got"
-		}
+	if input.value == _|_ {
+		output: value: "YIKES! what you got"
 	}
 }
 
 #Input: {
 	// forgotten_field
 	// value: string
-	null_check: string
+	null_check: string | *null
 }
 
 #Output: {
 	value!: string
+	null_check!: string
 }
