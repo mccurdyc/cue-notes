@@ -6,11 +6,9 @@ input: [
 	{name: "b", version: 1},
 ]
 
-output: [Name=string]: {
-	[Version=string]: {
-		name:    "\(Name)_\(Version)"
-		version: Version
-	}
+output: [Name=string]: [Version=string]: {
+	name:    "\(Name)_\(Version)"
+	version: Version
 }
 
 // https://cuelang.org/docs/tour/types/templates/
